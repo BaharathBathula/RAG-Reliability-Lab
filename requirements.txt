@@ -1,0 +1,13 @@
+python-dotenv
+pydantic
+numpy
+tqdm
+rich
+jinja2
+scikit-learn
+chromadb
+langchain
+langchain-community
+langchain-text-splitters
+langchain-openai
+openai
