@@ -3,21 +3,25 @@
 This project implements a production-minded RAG pipeline with reliability hooks:
 latency measurement, citation presence, retrieval quality proxies, and an eval runner.
 
-```mermaid
-flowchart TD
-    A[User Question]
-    B[Pipeline Ask]
-    C[Vector Retrieval Top K]
-    D[Context Chunks with Metadata]
-    E[Answer Generation with Citations]
-    F[Structured Response JSON]
+## Diagram
+See: **docs/architecture_diagram.md**
 
-    G[Evaluation Metrics]
-    H[Evaluation Runner]
-    I[Reports JSON HTML]
-    J[SLA Pass Fail]
+## Components
+- **ingest.py**: Loads docs, chunks text, stores embeddings (vector store).
+- **retrieve.py**: Retrieves Top-K relevant chunks for a query.
+- **generate.py**: Generates a grounded answer with citations using retrieved context.
+- **pipeline.py**: Orchestrates retrieval → generation and returns a structured response.
+- **evals/**: Defines metrics + runner to score reliability and prepare SLA reporting.
+- **reports/**: Stores evaluation outputs (next: JSON + HTML summary).
 
-    A --> B --> C --> D --> E --> F
-    F --> G --> H
-    H --> I
-    H --> J
+## Reliability signals (v1)
+- **Latency SLA**: request latency within threshold
+- **Citation presence**: answer includes citation markers like `[1]`
+- **Keyword recall proxy**: expected keywords appear in answer
+- **Has sources**: at least one retrieved chunk/source used
+
+## Next planned upgrades
+- HTML report generation
+- Regression testing (compare metrics vs baseline)
+- SLA gate for PR checks
+- Expand dataset and add groundedness checks
